@@ -54,7 +54,6 @@ export default function App() {
           </div>
           <Button
             $variant="ghost"
-            style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', borderColor: 'rgba(255,255,255,0.35)' }}
             onClick={() => {
               if (confirmReset) {
                 dispatch(resetToSeed());
@@ -90,7 +89,7 @@ export default function App() {
         <FilterBar filter={filter} onChange={setFilter} />
         <TransactionList filter={filter} onEdit={setEditing} />
 
-        <p style={{ color: '#94a3b8', fontSize: '0.82rem', textAlign: 'center', marginTop: 24 }}>
+        <p style={{ color: 'var(--ink-faint)', fontSize: '13px', textAlign: 'center', marginTop: 21 }}>
           Your data is stored only in this browser (localStorage). Nothing is sent to a server.
         </p>
       </Container>

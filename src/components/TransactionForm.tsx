@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store/store';
 import { addTransaction, updateTransaction } from '../store/financeSlice';
@@ -20,6 +21,13 @@ import {
   TypeButton,
   TypeToggle,
 } from '../styles';
+
+const FormError = styled.p`
+  color: var(--expense-text);
+  font-size: 14px;
+  margin: 0 0 13px;
+  line-height: 1.45;
+`;
 
 export interface EditingTransaction {
   id: string;
@@ -97,7 +105,7 @@ export default function TransactionForm({ editing, onDoneEditing }: Props) {
   }
 
   return (
-    <Card as="form" onSubmit={handleSubmit}>
+    <Card as="form" onSubmit={handleSubmit} className="et-enter" style={{ animationDelay: '240ms' }}>
       <CardTitle>{editing ? 'Edit transaction' : 'Add a transaction'}</CardTitle>
 
       <TypeToggle>
@@ -170,9 +178,7 @@ export default function TransactionForm({ editing, onDoneEditing }: Props) {
         />
       </Field>
 
-      {error && (
-        <p style={{ color: '#b91c1c', fontSize: '0.88rem', margin: '0 0 12px' }}>{error}</p>
-      )}
+      {error && <FormError>{error}</FormError>}
 
       <div style={{ display: 'flex', gap: 8 }}>
         <Button type="submit">{editing ? 'Save changes' : 'Add transaction'}</Button>

@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import {
   Bar,
@@ -14,63 +15,121 @@ import {
 } from 'recharts';
 import { selectMonthlyTrend, selectSpendingByCategory } from '../store/selectors';
 import { formatMoney } from '../types';
-import { Card, CardTitle, EmptyState, TwoCol } from '../styles';
+import { Card, CardSub, CardTitle, EmptyState, TwoColPhi } from '../styles';
+
+/**
+ * Charts as the window: the φ split gives the bar chart the 1.618 share.
+ * The pie becomes a donut whose centre reads the one number the chart is
+ * about — total spent — so the headline sits inside the figure, the way
+ * chart-scrub puts the readout on the card instead of in a tooltip box.
+ * Recharts data and props are unchanged; only chrome and type are restyled.
+ */
+
+const DonutWrap = styled.div`
+  position: relative;
+`;
+
+const DonutCentre = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+`;
+
+const DonutCentreLabel = styled.div`
+  font-size: 13px;
+  color: var(--ink-faint);
+`;
+
+const DonutCentreValue = styled.div`
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+`;
+
+const tickStyle = { fontSize: 12, fill: '#8a8f98' };
 
 export default function ChartsPanel() {
   const byCategory = useSelector(selectSpendingByCategory);
   const trend = useSelector(selectMonthlyTrend);
+  const totalSpent = byCategory.reduce((sum, e) => sum + e.total, 0);
 
   return (
-    <TwoCol>
-      <Card>
+    <TwoColPhi>
+      <Card className="et-enter" style={{ animationDelay: '60ms' }}>
         <CardTitle>Spending by category</CardTitle>
+        <CardSub>All expenses, by category</CardSub>
         {byCategory.length === 0 ? (
           <EmptyState>No expenses yet — add one to see the breakdown.</EmptyState>
         ) : (
-          <ResponsiveContainer width="100%" height={280}>
-            <PieChart>
-              <Pie
-                data={byCategory}
-                dataKey="total"
-                nameKey="category"
-                cx="50%"
-                cy="50%"
-                outerRadius={95}
-                label={({ payload, percent }) => {
-                  const category =
-                    (payload as { category?: string } | undefined)?.category ?? '';
-                  return `${category} ${(((percent ?? 0) as number) * 100).toFixed(0)}%`;
-                }}
-              >
-                {byCategory.map((entry) => (
-                  <Cell key={entry.category} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => formatMoney(Number(value))} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <DonutWrap>
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={byCategory}
+                  dataKey="total"
+                  nameKey="category"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={62}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  strokeWidth={0}
+                  isAnimationActive={false}
+                >
+                  {byCategory.map((entry) => (
+                    <Cell key={entry.category} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => formatMoney(Number(value))} />
+                <Legend wrapperStyle={{ fontSize: 13 }} iconSize={8} />
+              </PieChart>
+            </ResponsiveContainer>
+            <DonutCentre>
+              <DonutCentreLabel>Total spent</DonutCentreLabel>
+              <DonutCentreValue>{formatMoney(totalSpent)}</DonutCentreValue>
+            </DonutCentre>
+          </DonutWrap>
         )}
       </Card>
 
-      <Card>
+      <Card className="et-enter" style={{ animationDelay: '120ms' }}>
         <CardTitle>Income vs expenses by month</CardTitle>
+        <CardSub>Monthly totals across all transactions</CardSub>
         {trend.length === 0 ? (
           <EmptyState>No transactions yet.</EmptyState>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={trend} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(v: number) => `$${v}`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#eef0f2" vertical={false} />
+              <XAxis
+                dataKey="month"
+                tick={tickStyle}
+                axisLine={{ stroke: '#e6e8ec' }}
+                tickLine={false}
+                tickMargin={8}
+              />
+              <YAxis
+                tick={tickStyle}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: number) => `$${v}`}
+                width={48}
+              />
               <Tooltip formatter={(value) => formatMoney(Number(value))} />
-              <Legend />
-              <Bar dataKey="income" fill="#16a34a" name="Income" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="expenses" fill="#dc2626" name="Expenses" radius={[4, 4, 0, 0]} />
+              <Legend wrapperStyle={{ fontSize: 13 }} iconSize={8} />
+              <Bar dataKey="income" fill="#16a34a" name="Income" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="expenses" fill="#dc2626" name="Expenses" radius={[6, 6, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         )}
       </Card>
-    </TwoCol>
+    </TwoColPhi>
   );
 }

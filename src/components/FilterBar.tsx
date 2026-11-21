@@ -3,16 +3,54 @@ import { CATEGORIES } from '../types';
 import type { TransactionFilter } from '../store/selectors';
 import { Card, Field, Input, Label, Select } from '../styles';
 
+/**
+ * Filter toolbar: five quiet fields in a row, presets as pills underneath.
+ * Same fields, same presets, same behaviour — only the chrome changed.
+ */
+
 const FilterGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  grid-template-columns: 2fr 1fr 1.4fr 1fr 1fr;
+  gap: 13px;
 
   @media (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
   }
   @media (max-width: 560px) {
     grid-template-columns: 1fr;
+  }
+`;
+
+const Presets = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 13px;
+  flex-wrap: wrap;
+`;
+
+const Preset = styled.button`
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+
+  &:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-strong);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 `;
 
@@ -39,7 +77,7 @@ export default function FilterBar({ filter, onChange }: Props) {
   }
 
   return (
-    <Card style={{ marginBottom: 20 }}>
+    <Card style={{ marginBottom: 21 }} className="et-enter">
       <FilterGrid>
         <Field style={{ marginBottom: 0 }}>
           <Label htmlFor="f-search">Search</Label>
@@ -79,22 +117,11 @@ export default function FilterBar({ filter, onChange }: Props) {
           <Input id="f-to" type="date" value={filter.endDate} onChange={(e) => set({ endDate: e.target.value })} />
         </Field>
       </FilterGrid>
-      <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-        <button type="button" onClick={() => applyPreset('month')} style={presetStyle}>This month</button>
-        <button type="button" onClick={() => applyPreset('30days')} style={presetStyle}>Last 30 days</button>
-        <button type="button" onClick={() => applyPreset('all')} style={presetStyle}>All time</button>
-      </div>
+      <Presets>
+        <Preset type="button" onClick={() => applyPreset('month')}>This month</Preset>
+        <Preset type="button" onClick={() => applyPreset('30days')}>Last 30 days</Preset>
+        <Preset type="button" onClick={() => applyPreset('all')}>All time</Preset>
+      </Presets>
     </Card>
   );
 }
-
-const presetStyle: React.CSSProperties = {
-  border: '1px solid #cbd5e1',
-  background: '#fff',
-  borderRadius: 999,
-  padding: '6px 14px',
-  fontSize: '0.85rem',
-  fontWeight: 600,
-  color: '#334155',
-  cursor: 'pointer',
-};
