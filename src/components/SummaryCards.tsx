@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { selectTotals } from '../store/selectors';
 import { formatMoney } from '../types';
@@ -30,7 +30,7 @@ const HeroLabel = styled.div`
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
 `;
 
 const HeroValue = styled.div`
@@ -44,20 +44,20 @@ const HeroValue = styled.div`
 
 const HeroSub = styled.div`
   font-size: 13px;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   margin-top: 8px;
   line-height: 1.45;
 `;
 
 const Side = styled.div`
-  border-left: 1px solid var(--line);
+  border-left: 1px solid ${(p) => p.theme.line};
   padding-left: 34px;
   display: grid;
   gap: 21px;
 
   @media (max-width: 720px) {
     border-left: none;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid ${(p) => p.theme.line};
     padding-left: 0;
     padding-top: 21px;
   }
@@ -80,7 +80,7 @@ const SideLabel = styled.div`
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--ink);
+  color: ${(p) => p.theme.textSoft};
 `;
 
 const Dot = styled.span<{ $color: string }>`
@@ -93,7 +93,7 @@ const Dot = styled.span<{ $color: string }>`
 
 const SideSub = styled.div`
   font-size: 13px;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   margin-top: 4px;
   padding-left: 16px;
   line-height: 1.4;
@@ -108,6 +108,7 @@ const SideValue = styled.div`
 `;
 
 export default function SummaryCards() {
+  const theme = useTheme();
   const { income, expenses, balance, count } = useSelector(selectTotals);
   const savingsRate = income > 0 ? ((income - expenses) / income) * 100 : 0;
 
@@ -126,7 +127,7 @@ export default function SummaryCards() {
         <SideRow>
           <SideMeta>
             <SideLabel>
-              <Dot $color="var(--income)" />
+              <Dot $color={theme.income} />
               Total income
             </SideLabel>
             <SideSub>Across {count} transactions</SideSub>
@@ -136,7 +137,7 @@ export default function SummaryCards() {
         <SideRow>
           <SideMeta>
             <SideLabel>
-              <Dot $color="var(--expense)" />
+              <Dot $color={theme.expense} />
               Total expenses
             </SideLabel>
             <SideSub>

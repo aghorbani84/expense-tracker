@@ -5,6 +5,29 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Tracker — Personal Finance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply the saved theme before first paint (spec §5): no white flash.
+      try {
+        var s = localStorage.getItem('showcase-style');
+        var m = localStorage.getItem('showcase-mode');
+        document.documentElement.dataset.style = s === 'achaemenid' ? 'achaemenid' : 'modern';
+        document.documentElement.dataset.mode =
+          m === 'dark' || m === 'light'
+            ? m
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+      } catch (e) {
+        document.documentElement.dataset.style = 'modern';
+        document.documentElement.dataset.mode = 'light';
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

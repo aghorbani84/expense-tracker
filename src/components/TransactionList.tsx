@@ -36,18 +36,18 @@ const Table = styled.table`
 
 const Th = styled.th`
   text-align: left;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 8px 10px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid ${(p) => p.theme.line};
 `;
 
 const Td = styled.td`
   padding: 8px 10px;
-  border-bottom: 1px solid var(--line-faint);
+  border-bottom: 1px solid ${(p) => p.theme.lineFaint};
   vertical-align: middle;
 `;
 
@@ -55,7 +55,7 @@ const Row = styled.tr`
   transition: background-color 0.12s ease;
 
   &:hover {
-    background-color: #f8f9fa;
+    background-color: ${(p) => p.theme.surfaceRaised};
   }
   &:last-child td {
     border-bottom: none;
@@ -64,12 +64,12 @@ const Row = styled.tr`
 
 const Description = styled.span`
   font-weight: 500;
-  color: var(--ink-strong);
+  color: ${(p) => p.theme.text};
 `;
 
 const DateCell = styled.span`
   font-size: 13px;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 `;
@@ -77,7 +77,7 @@ const DateCell = styled.span`
 const Amount = styled.span<{ $isIncome: boolean }>`
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: ${(props) => (props.$isIncome ? 'var(--income-text)' : 'var(--expense-text)')};
+  color: ${(props) => (props.$isIncome ? props.theme.incomeText : props.theme.expenseText)};
   white-space: nowrap;
 `;
 
@@ -94,7 +94,7 @@ const TextAction = styled.button<{ $danger?: boolean }>`
   font-size: 13px;
   font-weight: 600;
   font-family: inherit;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   border-radius: 6px;
   cursor: pointer;
   transition:
@@ -102,11 +102,11 @@ const TextAction = styled.button<{ $danger?: boolean }>`
     background-color 0.12s ease;
 
   &:hover {
-    color: ${(props) => (props.$danger ? 'var(--expense-text)' : 'var(--ink-strong)')};
-    background-color: ${(props) => (props.$danger ? 'var(--expense-soft)' : 'var(--well)')};
+    color: ${(props) => (props.$danger ? props.theme.expenseText : props.theme.text)};
+    background-color: ${(props) => (props.$danger ? props.theme.expenseSoft : props.theme.surfaceRaised)};
   }
   &:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid ${(p) => p.theme.accent};
     outline-offset: 1px;
   }
 `;
@@ -120,14 +120,14 @@ const Foot = styled.div`
   justify-content: space-between;
   align-items: baseline;
   gap: 13px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid ${(p) => p.theme.line};
   padding: 13px 10px 0;
   margin-top: 8px;
   font-size: 14px;
 `;
 
 const FootLabel = styled.span`
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
 `;
 
 const FootValue = styled.span`

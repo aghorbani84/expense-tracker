@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components';
 import type { AppDispatch } from './store/store';
 import { resetToSeed } from './store/financeSlice';
 import { selectBudgetProgress } from './store/selectors';
@@ -11,20 +12,49 @@ import TransactionList from './components/TransactionList';
 import BudgetPanel from './components/BudgetPanel';
 import ChartsPanel from './components/ChartsPanel';
 import FilterBar from './components/FilterBar';
+import ThemeSwitcher from './components/ThemeSwitcher';
 import {
   Button,
   Container,
+  Footnote,
   Header,
+  HeaderActions,
   HeaderInner,
   Page,
   Subtitle,
   Title,
+  TitleRow,
   TwoCol,
   WarningBanner,
 } from './styles';
 
+/** One tasteful Faravahar accent (spec §3): small inline-SVG silhouette in the
+ * header, gold on transparent, shown only in the Achaemenid style. */
+function FaravaharMark() {
+  return (
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 32 32"
+      fill="none"
+      aria-hidden="true"
+      style={{ flex: 'none' }}
+    >
+      <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="16" cy="13" r="3.2" />
+        <path d="M16 16.2v6.3" />
+        <path d="M13 22.5h6" />
+        <path d="M12.8 13 4 9.5l2.2 3.5L4 15.5 12.8 13Z" />
+        <path d="M19.2 13 28 9.5l-2.2 3.5 2.2 2.5L19.2 13Z" />
+        <path d="M13.5 16.5 9 19M18.5 16.5 23 19" />
+      </g>
+    </svg>
+  );
+}
+
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
   const budgetProgress = useSelector(selectBudgetProgress);
   const overBudget = useMemo(
     () => budgetProgress.filter((p) => p.overBudget),
@@ -46,26 +76,36 @@ export default function App() {
       <Header>
         <HeaderInner>
           <div>
-            <Title>Expense Tracker</Title>
+            <TitleRow>
+              {theme.style === 'achaemenid' && (
+                <span style={{ color: theme.accent, display: 'inline-flex' }}>
+                  <FaravaharMark />
+                </span>
+              )}
+              <Title>Expense Tracker</Title>
+            </TitleRow>
             <Subtitle>
               Track income and spending, stay inside your monthly budgets, and see where
               the money goes.
             </Subtitle>
           </div>
-          <Button
-            $variant="ghost"
-            onClick={() => {
-              if (confirmReset) {
-                dispatch(resetToSeed());
-                setConfirmReset(false);
-              } else {
-                setConfirmReset(true);
-                window.setTimeout(() => setConfirmReset(false), 4000);
-              }
-            }}
-          >
-            {confirmReset ? 'Click again to confirm reset' : 'Reset sample data'}
-          </Button>
+          <HeaderActions>
+            <ThemeSwitcher />
+            <Button
+              $variant="ghost"
+              onClick={() => {
+                if (confirmReset) {
+                  dispatch(resetToSeed());
+                  setConfirmReset(false);
+                } else {
+                  setConfirmReset(true);
+                  window.setTimeout(() => setConfirmReset(false), 4000);
+                }
+              }}
+            >
+              {confirmReset ? 'Click again to confirm reset' : 'Reset sample data'}
+            </Button>
+          </HeaderActions>
         </HeaderInner>
       </Header>
 
@@ -89,9 +129,9 @@ export default function App() {
         <FilterBar filter={filter} onChange={setFilter} />
         <TransactionList filter={filter} onEdit={setEditing} />
 
-        <p style={{ color: 'var(--ink-faint)', fontSize: '13px', textAlign: 'center', marginTop: 21 }}>
+        <Footnote>
           Your data is stored only in this browser (localStorage). Nothing is sent to a server.
-        </p>
+        </Footnote>
       </Container>
     </Page>
   );

@@ -1,40 +1,11 @@
-/* Expense Tracker — visual tokens.
+/* Expense Tracker — base styles only. All colors / radii / shadows live in
+ * the theme objects (src/theme.ts) and are applied via styled-components
+ * ThemeProvider + GlobalStyle; nothing here hard-codes a color.
  *
  * Proportion system: phi ≈ 1.618. Spacing scale 8 / 13 / 21 / 34;
  * type scale 13 / 21 / 34 (labels / stat values / the one big number);
  * the hero summary splits 61.8% / 38.2%; the charts split 1fr / 1.618fr.
- * Quiet warm grays, one teal accent, status colors only where they mean
- * status. See styles.ts for the components that read these tokens.
  */
-
-:root {
-  --canvas: #f4f5f7;
-  --surface: #ffffff;
-  --well: #eceef1;
-  --line: #e6e8ec;
-  --line-faint: #eef0f2;
-  --ink-strong: #17181c;
-  --ink: #4b5058;
-  --ink-faint: #8a8f98;
-  --accent: #0f766e;
-  --accent-strong: #0b5e57;
-  --accent-soft: #e3f2f0;
-  --income: #16a34a;
-  --income-soft: #e5f6ec;
-  --income-text: #15803d;
-  --expense: #dc2626;
-  --expense-soft: #fdecec;
-  --expense-text: #b91c1c;
-  --warning-bg: #fef6e7;
-  --warning-line: #f5d9a8;
-  --warning-text: #92400e;
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
-  --shadow-card: 0 1px 2px rgba(23, 24, 28, 0.05), 0 1px 3px rgba(23, 24, 28, 0.04);
-  --shadow-lift: 0 8px 24px rgba(23, 24, 28, 0.1), 0 2px 6px rgba(23, 24, 28, 0.06);
-}
 
 * {
   box-sizing: border-box;
@@ -43,8 +14,6 @@
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: var(--canvas);
-  color: var(--ink-strong);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

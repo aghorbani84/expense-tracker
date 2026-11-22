@@ -29,14 +29,14 @@ const Presets = styled.div`
 `;
 
 const Preset = styled.button`
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: var(--radius-pill);
+  border: 1px solid ${(p) => p.theme.line};
+  background: ${(p) => p.theme.surface};
+  border-radius: ${(p) => p.theme.radiusPill};
   padding: 7px 14px;
   font-size: 13px;
   font-weight: 600;
   font-family: inherit;
-  color: var(--ink);
+  color: ${(p) => p.theme.textSoft};
   cursor: pointer;
   transition:
     background-color 0.12s ease,
@@ -44,12 +44,12 @@ const Preset = styled.button`
     color 0.12s ease;
 
   &:hover {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent-strong);
+    background: ${(p) => p.theme.accentSoft};
+    border-color: ${(p) => p.theme.accent};
+    color: ${(p) => p.theme.accentStrong};
   }
   &:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid ${(p) => p.theme.accent};
     outline-offset: 2px;
   }
 `;

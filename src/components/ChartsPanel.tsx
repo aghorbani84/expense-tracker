@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useSelector } from 'react-redux';
 import {
   Bar,
@@ -42,7 +42,7 @@ const DonutCentre = styled.div`
 
 const DonutCentreLabel = styled.div`
   font-size: 13px;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
 `;
 
 const DonutCentreValue = styled.div`
@@ -53,9 +53,16 @@ const DonutCentreValue = styled.div`
   margin-top: 2px;
 `;
 
-const tickStyle = { fontSize: 12, fill: '#8a8f98' };
-
 export default function ChartsPanel() {
+  const theme = useTheme();
+  const tickStyle = { fontSize: 12, fill: theme.chartTick };
+  const tooltipStyle = {
+    backgroundColor: theme.tooltipBg,
+    border: `1px solid ${theme.tooltipBorder}`,
+    borderRadius: theme.radiusMd,
+    color: theme.text,
+    fontSize: 13,
+  };
   const byCategory = useSelector(selectSpendingByCategory);
   const trend = useSelector(selectMonthlyTrend);
   const totalSpent = byCategory.reduce((sum, e) => sum + e.total, 0);
@@ -87,8 +94,8 @@ export default function ChartsPanel() {
                     <Cell key={entry.category} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatMoney(Number(value))} />
-                <Legend wrapperStyle={{ fontSize: 13 }} iconSize={8} />
+                <Tooltip formatter={(value) => formatMoney(Number(value))} contentStyle={tooltipStyle} />
+                <Legend wrapperStyle={{ fontSize: 13, color: theme.muted }} iconSize={8} />
               </PieChart>
             </ResponsiveContainer>
             <DonutCentre>
@@ -107,11 +114,11 @@ export default function ChartsPanel() {
         ) : (
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={trend} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#eef0f2" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.chartGrid} vertical={false} />
               <XAxis
                 dataKey="month"
                 tick={tickStyle}
-                axisLine={{ stroke: '#e6e8ec' }}
+                axisLine={{ stroke: theme.chartAxis }}
                 tickLine={false}
                 tickMargin={8}
               />
@@ -122,10 +129,10 @@ export default function ChartsPanel() {
                 tickFormatter={(v: number) => `$${v}`}
                 width={48}
               />
-              <Tooltip formatter={(value) => formatMoney(Number(value))} />
-              <Legend wrapperStyle={{ fontSize: 13 }} iconSize={8} />
-              <Bar dataKey="income" fill="#16a34a" name="Income" radius={[6, 6, 0, 0]} isAnimationActive={false} />
-              <Bar dataKey="expenses" fill="#dc2626" name="Expenses" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Tooltip formatter={(value) => formatMoney(Number(value))} contentStyle={tooltipStyle} />
+              <Legend wrapperStyle={{ fontSize: 13, color: theme.muted }} iconSize={8} />
+              <Bar dataKey="income" fill={theme.income} name="Income" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="expenses" fill={theme.expense} name="Expenses" radius={[6, 6, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         )}

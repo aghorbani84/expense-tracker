@@ -23,7 +23,7 @@ import {
 } from '../styles';
 
 const FormError = styled.p`
-  color: var(--expense-text);
+  color: ${(p) => p.theme.expenseText};
   font-size: 14px;
   margin: 0 0 13px;
   line-height: 1.45;

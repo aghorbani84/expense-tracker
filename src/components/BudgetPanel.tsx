@@ -45,12 +45,12 @@ const Dot = styled.span<{ $color: string }>`
 const RowAmounts = styled.span`
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  color: var(--ink);
+  color: ${(p) => p.theme.textSoft};
 `;
 
 const BarTrack = styled.div`
   height: 6px;
-  background: var(--well);
+  background: ${(p) => p.theme.surfaceRaised};
   border-radius: 999px;
   overflow: hidden;
 `;
@@ -58,7 +58,7 @@ const BarTrack = styled.div`
 const BarFill = styled.div<{ $width: number; $color: string; $over: boolean }>`
   height: 100%;
   width: ${(props) => Math.min(props.$width, 100)}%;
-  background: ${(props) => (props.$over ? 'var(--expense)' : props.$color)};
+  background: ${(props) => (props.$over ? props.theme.expense : props.$color)};
   border-radius: 999px;
   transition: width 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 `;
@@ -68,18 +68,18 @@ const RowFoot = styled.div`
   justify-content: space-between;
   gap: 13px;
   font-size: 13px;
-  color: var(--ink-faint);
+  color: ${(p) => p.theme.muted};
   margin-top: 6px;
 `;
 
 const Remaining = styled.span<{ $over: boolean }>`
-  color: ${(props) => (props.$over ? 'var(--expense-text)' : 'var(--ink-faint)')};
+  color: ${(props) => (props.$over ? props.theme.expenseText : props.theme.muted)};
   font-weight: ${(props) => (props.$over ? 600 : 400)};
   white-space: nowrap;
 `;
 
 const OverNote = styled.p`
-  color: var(--expense-text);
+  color: ${(p) => p.theme.expenseText};
   font-weight: 600;
   font-size: 14px;
   margin: 0 0 13px;
