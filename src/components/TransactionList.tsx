@@ -90,7 +90,8 @@ const Actions = styled.div`
 const TextAction = styled.button<{ $danger?: boolean }>`
   border: none;
   background: transparent;
-  padding: 6px 8px;
+  padding: 6px 10px;
+  min-height: 44px;
   font-size: 13px;
   font-weight: 600;
   font-family: inherit;
@@ -113,12 +114,15 @@ const TextAction = styled.button<{ $danger?: boolean }>`
 
 const ScrollWrap = styled.div`
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
 `;
 
 const Foot = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 13px;
   border-top: 1px solid ${(p) => p.theme.line};
   padding: 13px 10px 0;

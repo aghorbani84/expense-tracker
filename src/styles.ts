@@ -19,6 +19,10 @@ export const Container = styled.main`
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 21px 34px;
+
+  @media (max-width: 560px) {
+    padding: 0 16px 34px;
+  }
 `;
 
 /* Header: Modern = slim quiet surface + one hairline. Achaemenid = lotus-petal
@@ -57,6 +61,10 @@ export const HeaderInner = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 13px;
+
+  @media (max-width: 560px) {
+    padding: 0 16px;
+  }
 `;
 
 export const HeaderActions = styled.div`
@@ -80,6 +88,13 @@ export const Title = styled.h1`
   letter-spacing: ${(p) => (p.theme.style === 'achaemenid' ? '0.08em' : '-0.02em')};
   text-transform: ${(p) => (p.theme.style === 'achaemenid' ? 'uppercase' : 'none')};
   line-height: 1.2;
+
+  /* The datasheet title is a long live string — shrink it on phones so the
+     header stays a few lines, not a wall of wrapped text. */
+  @media (max-width: 560px) {
+    font-size: 18px;
+    letter-spacing: ${(p) => (p.theme.style === 'achaemenid' ? '0.04em' : '-0.01em')};
+  }
 `;
 
 export const Subtitle = styled.p`
@@ -95,6 +110,10 @@ export const Card = styled.section`
   border-radius: ${(p) => p.theme.radiusLg};
   padding: 21px;
   box-shadow: ${(p) => p.theme.shadowCard};
+
+  @media (max-width: 560px) {
+    padding: 16px;
+  }
 `;
 
 export const CardTitle = styled.h2`
@@ -151,7 +170,8 @@ export const TwoColPhi = styled.div`
 export const Button = styled.button<{ $variant?: 'primary' | 'ghost' | 'danger' }>`
   border: none;
   border-radius: ${(p) => p.theme.radiusMd};
-  padding: 10px 16px;
+  padding: 12px 16px;
+  min-height: 44px;
   font-size: 14px;
   font-weight: 600;
   font-family: inherit;
@@ -213,7 +233,8 @@ export const Button = styled.button<{ $variant?: 'primary' | 'ghost' | 'danger' 
 const controlBase = css`
   width: 100%;
   box-sizing: border-box;
-  height: 40px;
+  height: 44px;
+  min-height: 44px;
   border: 1px solid ${(p) => p.theme.line};
   border-radius: ${(p) => p.theme.radiusMd};
   padding: 0 12px;
@@ -286,6 +307,7 @@ export const TypeButton = styled.button<{ $active: boolean; $tone: 'income' | 'e
   box-shadow: ${(p) => (p.$active ? p.theme.shadowCard : 'none')};
   border-radius: ${(p) => p.theme.radiusMd};
   padding: 9px;
+  min-height: 44px;
   font-size: 15px;
   font-weight: 700;
   font-family: inherit;

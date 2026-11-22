@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 import type { AppDispatch } from './store/store';
 import { resetToSeed } from './store/financeSlice';
-import { selectBudgetProgress } from './store/selectors';
+import { selectBudgetProgress, selectSummary } from './store/selectors';
 import type { TransactionFilter } from './store/selectors';
-import SummaryCards from './components/SummaryCards';
+import { formatMoney } from './types';
+import SummaryHero from './components/SummaryHero';
+import ProofStrip from './components/ProofStrip';
 import TransactionForm from './components/TransactionForm';
 import type { EditingTransaction } from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
@@ -56,6 +58,13 @@ export default function App() {
   const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
   const budgetProgress = useSelector(selectBudgetProgress);
+  const summary = useSelector(selectSummary);
+  /** Datasheet title (rank-1 lesson §A.6): live numbers in the visible
+   * header title and in document.title, recomputed on every store change. */
+  const datasheetTitle = `Expense Tracker v2 — ${formatMoney(summary.expenses)} total · ${summary.count} transactions · ${summary.categoryCount} categories`;
+  useEffect(() => {
+    document.title = datasheetTitle;
+  }, [datasheetTitle]);
   const overBudget = useMemo(
     () => budgetProgress.filter((p) => p.overBudget),
     [budgetProgress],
@@ -82,7 +91,7 @@ export default function App() {
                   <FaravaharMark />
                 </span>
               )}
-              <Title>Expense Tracker</Title>
+              <Title>{datasheetTitle}</Title>
             </TitleRow>
             <Subtitle>
               Track income and spending, stay inside your monthly budgets, and see where
@@ -118,7 +127,8 @@ export default function App() {
           </WarningBanner>
         )}
 
-        <SummaryCards />
+        <ProofStrip />
+        <SummaryHero />
         <ChartsPanel />
 
         <TwoCol>

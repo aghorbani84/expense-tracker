@@ -22,7 +22,8 @@ const RowHead = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 13px;
+  flex-wrap: wrap;
+  gap: 4px 13px;
   font-size: 15px;
   margin-bottom: 8px;
 `;
@@ -66,7 +67,8 @@ const BarFill = styled.div<{ $width: number; $color: string; $over: boolean }>`
 const RowFoot = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 13px;
+  flex-wrap: wrap;
+  gap: 4px 13px;
   font-size: 13px;
   color: ${(p) => p.theme.muted};
   margin-top: 6px;

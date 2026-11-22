@@ -27,7 +27,8 @@ const Segment = styled.button<{ $active: boolean }>`
   gap: 6px;
   border: none;
   border-radius: ${(p) => p.theme.radiusPill};
-  padding: 7px 12px;
+  padding: 10px 12px;
+  min-height: 44px;
   font-size: 13px;
   font-weight: 700;
   font-family: inherit;
@@ -55,8 +56,8 @@ const ModeButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: 1px solid ${(p) => p.theme.line};
   border-radius: ${(p) => p.theme.radiusPill};
   background: ${(p) => p.theme.surface};

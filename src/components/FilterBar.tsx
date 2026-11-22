@@ -32,7 +32,8 @@ const Preset = styled.button`
   border: 1px solid ${(p) => p.theme.line};
   background: ${(p) => p.theme.surface};
   border-radius: ${(p) => p.theme.radiusPill};
-  padding: 7px 14px;
+  padding: 10px 14px;
+  min-height: 44px;
   font-size: 13px;
   font-weight: 600;
   font-family: inherit;
